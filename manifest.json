@@ -2,11 +2,18 @@
   "name": "Recall",
   "description" : "To use, type 're' plus a search term into the Omnibox.",
   "version": "0.1.0",
+  "permissions": [
+    "storage"
+  ],
   "background": {
     "scripts": ["background.js"]
   },
   "omnibox": { 
     "keyword" : "re"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
   },
   "manifest_version": 2
 }
