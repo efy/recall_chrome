@@ -29,14 +29,16 @@ function restore_options() {
 
 function test_server(e) {
   var addr = ui.server_address.value
-  e.preventDefault()
+  var endpoint = "/api/v0/ping"
 
-  get(addr)
+  get(addr + endpoint)
     .then(function(response){
-      ui.server_message.textContent = 'Ok'
+      console.log(response)
+      var res = JSON.parse(response)
+      ui.server_message.textContent = 'status: ' + res.status + ', version: ' + res.version
     })
     .catch(function(err){
-      ui.server_message.textContent = 'Failed'
+      ui.server_message.textContent = 'failed to connect to server'
     })
 }
 
@@ -49,7 +51,7 @@ function get(url) {
     xhr.onload = function() {
       var self = this
       if(self.status >= 200 && self.status <= 300) {
-        resolve(self.repsonseText)
+        resolve(self.responseText)
       } else {
         reject({
           status: self.status,
