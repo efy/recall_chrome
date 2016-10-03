@@ -2,8 +2,14 @@
 var ui = {
   server_address: document.getElementById('server_address'),
   status: document.getElementById('status'),
-  save: document.getElementById('save')
+  save: document.getElementById('save'),
+  server_test: document.getElementById('server_test'),
+  server_message: document.getElementById('server_message')
 }
+
+document.addEventListener('DOMContentLoaded', restore_options)
+ui.save.addEventListener('click', save_options)
+ui.server_test.addEventListener('click', test_server)
 
 function save_options() {
   chrome.storage.sync.set({
@@ -21,5 +27,45 @@ function restore_options() {
   })
 }
 
-document.addEventListener('DOMContentLoaded', restore_options)
-ui.save.addEventListener('click', save_options)
+function test_server(e) {
+  var addr = ui.server_address.value
+  e.preventDefault()
+
+  get(addr)
+    .then(function(response){
+      ui.server_message.textContent = 'Ok'
+    })
+    .catch(function(err){
+      ui.server_message.textContent = 'Failed'
+    })
+}
+
+function get(url) {
+  return new Promise(function(resolve, reject) {
+
+    var xhr = new XMLHttpRequest()
+    xhr.open('GET', url)
+
+    xhr.onload = function() {
+      var self = this
+      if(self.status >= 200 && self.status <= 300) {
+        resolve(self.repsonseText)
+      } else {
+        reject({
+          status: self.status,
+          message: self.statusText
+        })
+      }
+    }
+
+    xhr.onerror = function() {
+      var self = this
+      reject({
+        status: self.status,
+        message: self.statusText
+      })
+    }
+
+    xhr.send()
+  })
+}

@@ -3,13 +3,24 @@
   <head>
     <title>Recall Chrome extension options</title>
   </head>
+  <link rel="stylesheet" href="options.css" type="text/css">
 <body>
 
-<label for="server">Server</label>
-<input type="text" id="server_address" name="server">
+<div class="section">
+  <div class="option-group">
+    <label for="server">Server</label>
+    <input type="text" id="server_address" name="server">
+    <button id="server_test" title="Test the server" type="button">Test</button>
+    <span id="server_message"></span>
+  </div>
+</div>
 
-<div id="status"></div>
-<button id="save">Save</button>
+<hr>
+
+<div class="section">
+  <button id="save">Save</button>
+  <span id="status"></span>
+</div>
 
 <script src="options.js"></script>
 

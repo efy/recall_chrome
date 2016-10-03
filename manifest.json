@@ -3,7 +3,8 @@
   "description" : "To use, type 're' plus a search term into the Omnibox.",
   "version": "0.1.0",
   "permissions": [
-    "storage"
+    "storage",
+    "webRequest"
   ],
   "background": {
     "scripts": ["background.js"]
