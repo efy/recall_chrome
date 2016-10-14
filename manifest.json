@@ -1,10 +1,12 @@
 {
   "name": "Recall",
+  "manifest_version": 2,
   "description" : "To use, type 're' plus a search term into the Omnibox.",
   "version": "0.1.0",
   "permissions": [
     "storage",
-    "webRequest"
+    "webRequest",
+    "tabs"
   ],
   "background": {
     "scripts": ["background.js"]
@@ -16,5 +18,13 @@
     "page": "options.html",
     "chrome_style": true
   },
-  "manifest_version": 2
+  "commands": {
+    "bookmark_current_page": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "Bookmark current page"
+    }
+  }
 }
