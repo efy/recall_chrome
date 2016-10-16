@@ -1,12 +1,16 @@
 {
   "name": "Recall",
   "manifest_version": 2,
+  "icons": {
+    "128": "recall_icon.png"
+  },
   "description" : "To use, type 're' plus a search term into the Omnibox.",
   "version": "0.1.0",
   "permissions": [
     "storage",
     "webRequest",
-    "tabs"
+    "tabs",
+    "notifications"
   ],
   "background": {
     "scripts": ["background.js"]

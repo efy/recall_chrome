@@ -36,9 +36,9 @@ function post_bookmark(bookmark) {
     data.append('title', bookmark.title)
 
     xhr.open('POST', endpoint, true)
-    xhr.load = function() {
-      if(xhr.readyState === 4 && http.status === 200) {
-        console.log(xhr.responseText)
+    xhr.onload = function() {
+      if(xhr.readyState === 4 && xhr.status === 200) {
+        post_success_notification(bookmark)
       }
     }
 
@@ -49,3 +49,14 @@ function post_bookmark(bookmark) {
     xhr.send(data)
   })
 }
+
+function post_success_notification(bookmark) {
+  var opts = {
+    type: "basic",
+    title: "Added bookmark",
+    message: bookmark.title,
+    iconUrl: 'recall_icon.png'
+  }
+  chrome.notifications.create(opts)
+}
+
