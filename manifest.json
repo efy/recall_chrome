@@ -10,7 +10,8 @@
     "storage",
     "webRequest",
     "tabs",
-    "notifications"
+    "notifications",
+    "chrome://favicon/"
   ],
   "background": {
     "scripts": ["background.js"]
