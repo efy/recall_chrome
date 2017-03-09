@@ -1,6 +1,8 @@
 
 var ui = {
   server_address: document.getElementById('server_address'),
+  username: document.getElementById('username'),
+  password: document.getElementById('password'),
   status: document.getElementById('status'),
   save: document.getElementById('save'),
   server_test: document.getElementById('server_test'),
@@ -13,17 +15,23 @@ ui.server_test.addEventListener('click', test_server)
 
 function save_options() {
   chrome.storage.sync.set({
-    server_address: ui.server_address.value
-  }, function(){
+    server_address: ui.server_address.value,
+    username: ui.username.value,
+    password: ui.password.value,
+  }, function() {
     ui.status.textContent = 'Options updated'
   })
 }
 
 function restore_options() {
   chrome.storage.sync.get({
-    server_address: 'http://localhost'
+    server_address: 'http://localhost',
+    username: '',
+    password: ''
   }, function(items) {
     ui.server_address.value = items.server_address
+    ui.username.value = items.username
+    ui.password.value = items.password
   })
 }
 
