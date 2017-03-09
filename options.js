@@ -37,45 +37,21 @@ function restore_options() {
 
 function test_server(e) {
   var addr = ui.server_address.value
+  var username = ui.username.value
+  var password = ui.password.value
   var endpoint = "/api/v0/ping"
 
-  get(addr + endpoint)
-    .then(function(response){
-      console.log(response)
-      var res = JSON.parse(response)
-      ui.server_message.textContent = 'status: ' + res.status + ', version: ' + res.version
-    })
-    .catch(function(err){
-      ui.server_message.textContent = 'failed to connect to server'
-    })
-}
-
-function get(url) {
-  return new Promise(function(resolve, reject) {
-
-    var xhr = new XMLHttpRequest()
-    xhr.open('GET', url)
-
-    xhr.onload = function() {
-      var self = this
-      if(self.status >= 200 && self.status <= 300) {
-        resolve(self.responseText)
-      } else {
-        reject({
-          status: self.status,
-          message: self.statusText
-        })
-      }
+  axios.get(addr + endpoint, {
+    auth: {
+      username: username,
+      password: password
     }
-
-    xhr.onerror = function() {
-      var self = this
-      reject({
-        status: self.status,
-        message: self.statusText
-      })
-    }
-
-    xhr.send()
+  })
+  .then(function(response){
+    var res = response.data
+    ui.server_message.textContent = 'status: ' + res.status + ', version: ' + res.version
+  })
+  .catch(function(err){
+    ui.server_message.textContent = 'failed to connect to server'
   })
 }
