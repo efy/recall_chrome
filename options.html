@@ -16,7 +16,7 @@
       <label class="form-label label-sm" for="server">Server URL</label>
       <div class="input-group">
         <input class="form-input input-sm" type="text" id="server_address" name="server">
-        <button id="server_test" title="Test the server" class="btn btn-default btn-sm" type="button">Ping</button>
+        <button id="server_test" title="Test the server connection" class="btn btn-default btn-sm" type="button">Ping</button>
       </div>
     </div>
 
@@ -38,7 +38,7 @@
     </div>
 
     <div class="form-group">
-      <button class="btn btn-default btn-sm btn-block">Test Connection</button>
+      <button id="auth_test" class="btn btn-default btn-sm btn-block" type="button">Test Connection</button>
     </div>
   </form>
 </div>
@@ -47,7 +47,7 @@
 
 <div class="container section">
   <button id="save" class="btn btn-primary">Save</button>
-  <span class="form-input-hint float-right" id="status">Untested</span>
+  <span class="form-input-hint float-right" id="status"></span>
 </div>
 
 <script src="options.js"></script>

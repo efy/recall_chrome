@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', restore_options)
 
 ui.save.addEventListener('click', save_options)
 ui.server_test.addEventListener('click', ping_server)
-ui.auth_test('click', test_auth)
+ui.auth_test.addEventListener('click', test_auth)
 
 function save_options() {
   chrome.storage.sync.set({
@@ -52,10 +52,18 @@ function test_auth(e) {
   })
   .then(function(response){
     var res = response.data
-    ui.server_message.textContent = 'status: ' + res.status + ', version: ' + res.version
+    ui.server_message.innerHTML = 'Auth: <span class="label label-success">Success</span>'
+    ui.username.classList.remove('is-error')
+    ui.password.classList.remove('is-error')
+    ui.username.classList.add('is-success')
+    ui.password.classList.add('is-success')
   })
   .catch(function(err){
-    ui.server_message.textContent = 'failed to connect to server'
+    ui.server_message.innerHTML = 'Auth: <span class="label label-error">Failed</span>'
+    ui.username.classList.remove('is-success')
+    ui.password.classList.remove('is-success')
+    ui.username.classList.add('is-error')
+    ui.password.classList.add('is-error')
   })
 }
 
