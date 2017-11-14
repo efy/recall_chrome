@@ -6,7 +6,7 @@ var ui = {
   status: document.getElementById('status'),
   save: document.getElementById('save'),
   server_test: document.getElementById('server_test'),
-  server_message: document.getElementById('server_message')
+  server_message: document.getElementById('status')
 }
 
 document.addEventListener('DOMContentLoaded', restore_options)

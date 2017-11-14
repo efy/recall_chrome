@@ -21,7 +21,7 @@
   },
   "options_ui": {
     "page": "options.html",
-    "chrome_style": true
+    "chrome_style": false
   },
   "commands": {
     "bookmark_current_page": {
