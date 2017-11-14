@@ -39,7 +39,7 @@ function test_server(e) {
   var addr = ui.server_address.value
   var username = ui.username.value
   var password = ui.password.value
-  var endpoint = "/api/v0/ping"
+  var endpoint = "/api/ping"
 
   axios.get(addr + endpoint, {
     auth: {
