@@ -6,12 +6,15 @@ var ui = {
   status: document.getElementById('status'),
   save: document.getElementById('save'),
   server_test: document.getElementById('server_test'),
-  server_message: document.getElementById('status')
+  server_message: document.getElementById('status'),
+  auth_test: document.getElementById('auth_test')
 }
 
 document.addEventListener('DOMContentLoaded', restore_options)
+
 ui.save.addEventListener('click', save_options)
-ui.server_test.addEventListener('click', test_server)
+ui.server_test.addEventListener('click', ping_server)
+ui.auth_test('click', test_auth)
 
 function save_options() {
   chrome.storage.sync.set({
@@ -35,7 +38,7 @@ function restore_options() {
   })
 }
 
-function test_server(e) {
+function test_auth(e) {
   var addr = ui.server_address.value
   var username = ui.username.value
   var password = ui.password.value
@@ -54,4 +57,22 @@ function test_server(e) {
   .catch(function(err){
     ui.server_message.textContent = 'failed to connect to server'
   })
+}
+
+function ping_server(e) {
+  var addr = ui.server_address.value
+  var endpoint = "/api/ping"
+
+  axios.get(addr + endpoint)
+    .then(function(response){
+      var res = response.data
+      ui.server_message.innerHTML = 'Ping: <span class="label label-success">' + res.status + '</span>'
+      ui.server_address.classList.remove('is-error')
+      ui.server_address.classList.add('is-success')
+    })
+    .catch(function(err){
+      ui.server_message.innerHTML = 'Ping: <span class="label label-error">Fail</span> Cannot connect to server'
+      ui.server_address.classList.remove('is-success')
+      ui.server_address.classList.add('is-error')
+    })
 }
