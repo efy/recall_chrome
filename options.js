@@ -42,12 +42,12 @@ function test_auth(e) {
   var addr = ui.server_address.value
   var username = ui.username.value
   var password = ui.password.value
-  var endpoint = "/api/ping"
+  var endpoint = "/api/auth"
 
-  axios.get(addr + endpoint, {
-    auth: {
-      username: username,
-      password: password
+  axios.post(addr + endpoint, {}, {
+    headers: {
+      'Username': username,
+      'Password': password
     }
   })
   .then(function(response){
