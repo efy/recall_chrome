@@ -29,37 +29,86 @@ chrome.commands.onCommand.addListener(function(command) {
   }
 })
 
-function post_bookmark(bookmark) {
-  var data = new FormData()
-  var xhr = new XMLHttpRequest()
-
-  chrome.storage.sync.get({
-    server_address: 'http://localhost'
-  }, function(items) {
-    var endpoint = items.server_address + '/api/v0/bookmarks'
-    data.append('url', bookmark.url)
-    data.append('title', bookmark.title)
-    data.append('icon', bookmark.icon)
-
-    xhr.open('POST', endpoint, true)
-    xhr.onload = function() {
-      if(xhr.readyState === 4 && xhr.status === 200) {
-        post_success_notification(bookmark)
+chrome.bookmarks.onCreated.addListener(function(id, bookmark) {
+  authenticate().then(function(token){
+    console.log(token)
+    fetch_favicon(bookmark.url).then(function(base64){
+      var bm = {
+        title: bookmark.title,
+        url: bookmark.url,
+        icon: base64
       }
-    }
+      create_bookmark(bm, token)
+    })
+  }).catch(function(err) {
+    console.log("authentication failed")
+  })
+})
 
-    xhr.onerror = function() {
-      console.log(xhr)
-    }
-
-    xhr.send(data)
+function authenticate() {
+  return new Promise(function(resolve, reject) {
+    chrome.storage.sync.get({
+      server_address: 'http://localhost',
+      username: '',
+      password: ''
+    }, function(items){
+      var user = items.username
+      var password = items.password
+      var endpoint = items.server_address + '/api/auth'
+      fetch(endpoint, {
+        method: 'post',
+        headers: new Headers({
+          'Username': user,
+          'Password': password
+        })
+      }).then(function(response) {
+        return response.text()
+      }).then(function(token){
+        resolve(token)
+      }).catch(function(err) {
+        console.log(error)
+        reject(err)
+      })
+    })
   })
 }
 
-function post_success_notification(bookmark) {
+function create_bookmark(bookmark, auth_token) {
+  var token = "Bearer " + auth_token
+  chrome.storage.sync.get({
+    server_address: 'http://localhost'
+  }, function(items) {
+    var endpoint = items.server_address + '/api/bookmarks'
+    fetch(endpoint, {
+      method: 'post',
+      headers: new Headers({
+        "Authorization": token
+      }),
+      body: JSON.stringify(bookmark)
+    }).then(function(response) {
+      return response.json()
+    }).then(function(data){
+      success_notification(bookmark)
+    }).catch(function(err) {
+      failure_notification(bookmark)
+    })
+  })
+}
+
+function success_notification(bookmark) {
   var opts = {
     type: "basic",
     title: "Added bookmark",
+    message: bookmark.title,
+    iconUrl: 'recall_icon.png'
+  }
+  chrome.notifications.create(opts)
+}
+
+function failure_notification(bookmark) {
+  var opts = {
+    type: "basic",
+    title: "Add bookmark failed",
     message: bookmark.title,
     iconUrl: 'recall_icon.png'
   }
