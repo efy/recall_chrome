@@ -1,13 +1,31 @@
-chrome.omnibox.onInputChanged.addListener(function(text, suggest) {
-  suggest([
-    {content: "Hackernews", description: "<url>http://news.ycombinator.com</url> <dim>Hackernews</dim>"},
-    {content: "Designernews", description: "<url>http://designernews.com</url> <dim>Designer News</dim>"},
-    {content: "It's Nice That", description: "<url>http://itsnicethat.com</url> <dim>It's Nice That</dim>"}
-  ])
-})
+chrome.omnibox.onInputChanged.addListener(debounce(function(text, suggest) {
+  authenticate().then(function(token) {
+    search(text, token).then(function(results) {
+      if(!results) {
+        return
+      }
 
-chrome.omnibox.onInputEntered.addListener(function(text) {
-  alert('You just typed "' + text + '"')
+      suggestions = results.map(function(res){
+        var parser = document.createElement('a')
+        parser.href = res.url
+        var domain = parser.hostname
+        return {
+          content: res.url,
+          description: "<url>" + domain + "</url> <dim>" + res.title + "</dim>"
+        }
+      })
+
+      var len = suggestions.length >= 5 ? 5 : suggestions.length
+      suggestions = suggestions.slice(0, len)
+
+      suggest(suggestions)
+    })
+  })
+}, 300))
+
+chrome.omnibox.onInputEntered.addListener(function(url) {
+  // New or same window should be an option
+  window.open(url)
 })
 
 chrome.commands.onCommand.addListener(function(command) {
@@ -21,8 +39,6 @@ chrome.commands.onCommand.addListener(function(command) {
           icon: favicon
         }
 
-        console.log(bookmark);
-
         post_bookmark(bookmark)
       })
     })
@@ -31,7 +47,6 @@ chrome.commands.onCommand.addListener(function(command) {
 
 chrome.bookmarks.onCreated.addListener(function(id, bookmark) {
   authenticate().then(function(token){
-    console.log(token)
     fetch_favicon(bookmark.url).then(function(base64){
       var bm = {
         title: bookmark.title,
@@ -68,6 +83,29 @@ function authenticate() {
       }).catch(function(err) {
         console.log(error)
         reject(err)
+      })
+    })
+  })
+}
+
+function search(query, auth_token) {
+  return new Promise(function(resolve, reject) {
+    var token = "Bearer " + auth_token
+    chrome.storage.sync.get({
+      server_address: 'http://localhost'
+    }, function(options) {
+      var endpoint = options.server_address + '/api/bookmarks/search?q=' + encodeURI(query)
+      fetch(endpoint, {
+        method: 'get',
+        headers: new Headers({
+          "Authorization": token
+        })
+      }).then(function(response) {
+        return response.json()
+      }).then(function(json){
+        return resolve(json)
+      }).catch(function(error) {
+        return reject(error)
       })
     })
   })
@@ -131,5 +169,22 @@ function fetch_favicon(url) {
     }
     img.src = 'chrome://favicon/' + url
   })
+}
+
+function debounce(fn, w) {
+  var timeout
+
+  return function() {
+    var args = arguments
+    var ctx = this
+
+    var later = function () {
+      timeout = null
+      fn.apply(ctx, args)
+    }
+
+    clearTimeout(timeout)
+    timeout = setTimeout(later, w)
+  }
 }
 
