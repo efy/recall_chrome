@@ -45,9 +45,9 @@ function test_auth(e) {
   var endpoint = "/api/auth"
 
   axios.post(addr + endpoint, {}, {
-    headers: {
-      'Username': username,
-      'Password': password
+    auth: {
+      username: username,
+      password: password
     }
   })
   .then(function(response){

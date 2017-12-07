@@ -67,14 +67,16 @@ function authenticate() {
       username: '',
       password: ''
     }, function(items){
-      var user = items.username
+      var username = items.username
       var password = items.password
       var endpoint = items.server_address + '/api/auth'
+
+      var auth_token = btoa(username + ":" + password)
+
       fetch(endpoint, {
         method: 'post',
         headers: new Headers({
-          'Username': user,
-          'Password': password
+          'Authorization': 'Basic ' + auth_token
         })
       }).then(function(response) {
         return response.text()
