@@ -13,3 +13,13 @@ hr {
   outline: 0;
 }
 
+.settings-container {
+  width: 450px;
+  height: 250px;
+  overflow-y: hidden;
+}
+
+.hidden {
+  display: none;
+}
+

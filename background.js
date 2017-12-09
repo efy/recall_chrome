@@ -36,7 +36,15 @@ chrome.omnibox.onInputChanged.addListener(debounce(function(text, suggest) {
 
 chrome.omnibox.onInputEntered.addListener(function(url) {
   // New or same window should be an option
-  window.open(url)
+  chrome.storage.sync.get({
+    link_target: false
+  }, function(options){
+    if(options.link_target) {
+      window.open(url)
+      return
+    }
+    window.location = url
+  })
 })
 
 chrome.commands.onCommand.addListener(function(command) {

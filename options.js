@@ -1,4 +1,28 @@
 
+// handle tabs
+var tabnav = Array.from(document.querySelectorAll('[data-tab]'))
+var tabs = Array.from(document.querySelectorAll('[data-tabname]'))
+
+tabnav.forEach(function(tabnavitem) {
+  tabnavitem.addEventListener('click', function(e){
+    // Set active tab
+    tabnav.forEach(function(item){
+      item.parentElement.classList.remove('active')
+    })
+    e.target.parentElement.classList.add('active')
+
+    // Hide all tabs
+    tabs.forEach(function(tab) {
+      tab.classList.add('hidden')
+    })
+
+    // Reveal selected tab
+    var tabname = e.target.dataset.tab
+    var active = document.querySelector('[data-tabname="' + tabname + '"]')
+    active.classList.remove('hidden')
+  })
+})
+
 var ui = {
   server_address: document.getElementById('server_address'),
   username: document.getElementById('username'),
@@ -7,7 +31,8 @@ var ui = {
   save: document.getElementById('save'),
   server_test: document.getElementById('server_test'),
   server_message: document.getElementById('status'),
-  auth_test: document.getElementById('auth_test')
+  auth_test: document.getElementById('auth_test'),
+  link_target: document.getElementById('link_target')
 }
 
 document.addEventListener('DOMContentLoaded', restore_options)
@@ -21,6 +46,7 @@ function save_options() {
     server_address: ui.server_address.value,
     username: ui.username.value,
     password: ui.password.value,
+    link_target: ui.link_target.checked
   }, function() {
     ui.status.textContent = 'Options updated'
   })
@@ -30,11 +56,13 @@ function restore_options() {
   chrome.storage.sync.get({
     server_address: 'http://localhost',
     username: '',
-    password: ''
+    password: '',
+    link_target: false
   }, function(items) {
     ui.server_address.value = items.server_address
     ui.username.value = items.username
     ui.password.value = items.password
+    ui.link_target.checked = items.link_target
   })
 }
 
