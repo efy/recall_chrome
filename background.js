@@ -15,10 +15,21 @@ chrome.omnibox.onInputChanged.addListener(debounce(function(text, suggest) {
         }
       })
 
-      var len = suggestions.length >= 5 ? 5 : suggestions.length
+      var len = suggestions.length >= 4 ? 4 : suggestions.length
       suggestions = suggestions.slice(0, len)
 
-      suggest(suggestions)
+      chrome.storage.sync.get({
+          server_address: 'http://localhost'
+      }, function(options) {
+        suggestions.push({
+          content: options.server_address,
+          description: "<url>" + options.server_address + "</url> <dim>Go to app</dim>"
+        })
+
+        console.log(suggestions)
+
+        suggest(suggestions)
+      })
     })
   })
 }, 300))
