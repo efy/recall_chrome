@@ -1,0 +1,22 @@
+.rc-dropzone {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  text-align: center;
+  color: #333;
+  font-size: 14px;
+  text-transform: uppercase;
+  outline: 1px dashed #eaeaea;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 10px;
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 240px;
+  z-index: 99999;
+}
+
+.rc-dropzone__active {
+  background: #eaeaea;
+  outline: 0;
+}

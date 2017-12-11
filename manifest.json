@@ -19,7 +19,8 @@
   },
   "content_scripts": [{
     "matches": ["http://*/*", "https://*/*"],
-    "js": ["inject.js"]
+    "js": ["inject.js"],
+    "css": ["inject.css"]
   }],
   "omnibox": { 
     "keyword" : "re"
