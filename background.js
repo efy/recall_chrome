@@ -26,8 +26,6 @@ chrome.omnibox.onInputChanged.addListener(debounce(function(text, suggest) {
           description: "<url>" + options.server_address + "</url> <dim>Go to app</dim>"
         })
 
-        console.log(suggestions)
-
         suggest(suggestions)
       })
     })
@@ -135,7 +133,8 @@ function search(query, auth_token) {
 function create_bookmark(bookmark, auth_token) {
   var token = "Bearer " + auth_token
   chrome.storage.sync.get({
-    server_address: 'http://localhost'
+    server_address: 'http://localhost',
+    show_notifications: false
   }, function(items) {
     var endpoint = items.server_address + '/api/bookmarks'
     fetch(endpoint, {
@@ -147,9 +146,13 @@ function create_bookmark(bookmark, auth_token) {
     }).then(function(response) {
       return response.json()
     }).then(function(data){
-      success_notification(bookmark)
+      if(items.show_notifications) {
+        success_notification(bookmark)
+      }
     }).catch(function(err) {
-      failure_notification(bookmark)
+      if(items.show_notifications) {
+        failure_notification(bookmark)
+      }
     })
   })
 }

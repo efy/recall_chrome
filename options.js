@@ -32,7 +32,8 @@ var ui = {
   server_test: document.getElementById('server_test'),
   server_message: document.getElementById('status'),
   auth_test: document.getElementById('auth_test'),
-  link_target: document.getElementById('link_target')
+  link_target: document.getElementById('link_target'),
+  show_notifications: document.getElementById('show_notifications')
 }
 
 document.addEventListener('DOMContentLoaded', restore_options)
@@ -46,7 +47,8 @@ function save_options() {
     server_address: ui.server_address.value,
     username: ui.username.value,
     password: ui.password.value,
-    link_target: ui.link_target.checked
+    link_target: ui.link_target.checked,
+    show_notifications: ui.show_notifications.checked
   }, function() {
     ui.status.textContent = 'Options updated'
   })
@@ -57,12 +59,14 @@ function restore_options() {
     server_address: 'http://localhost',
     username: '',
     password: '',
-    link_target: false
+    link_target: false,
+    show_notifications: false
   }, function(items) {
     ui.server_address.value = items.server_address
     ui.username.value = items.username
     ui.password.value = items.password
     ui.link_target.checked = items.link_target
+    ui.show_notifications.checked = items.show_notifications
   })
 }
 
