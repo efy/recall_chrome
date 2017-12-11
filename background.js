@@ -1,3 +1,6 @@
+// Omnibox search
+// executes a search query against the api and shows
+// the list of results in the chrome address bar / dropdown
 chrome.omnibox.onInputChanged.addListener(debounce(function(text, suggest) {
   authenticate().then(function(token) {
     search(text, token).then(function(results) {
@@ -32,6 +35,7 @@ chrome.omnibox.onInputChanged.addListener(debounce(function(text, suggest) {
   })
 }, 300))
 
+// Handle omnibox search result selection
 chrome.omnibox.onInputEntered.addListener(function(url) {
   // New or same window should be an option
   chrome.storage.sync.get({
@@ -45,6 +49,7 @@ chrome.omnibox.onInputEntered.addListener(function(url) {
   })
 })
 
+// Recall specific hotkey / command
 chrome.commands.onCommand.addListener(function(command) {
   if(command === "bookmark_current_page") {
     chrome.tabs.query({active: true}, function(tabs) {
@@ -62,6 +67,8 @@ chrome.commands.onCommand.addListener(function(command) {
   }
 })
 
+// Hook into chromes built in bookmark mechanism
+// and send the recall server when bookmark is added
 chrome.bookmarks.onCreated.addListener(function(id, bookmark) {
   authenticate().then(function(token){
     fetch_favicon(bookmark.url).then(function(base64){

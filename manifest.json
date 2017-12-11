@@ -17,6 +17,10 @@
   "background": {
     "scripts": ["background.js"]
   },
+  "content_scripts": [{
+    "matches": ["http://*/*", "https://*/*"],
+    "js": ["inject.js"]
+  }],
   "omnibox": { 
     "keyword" : "re"
   },
