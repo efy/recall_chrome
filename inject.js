@@ -22,11 +22,18 @@
     el.addEventListener('drop', function(e){
       e.preventDefault()
 
-      if (e.dataTransfer.items != null) {
-        var items = Array.from(e.dataTransfer.items)
-        items.forEach(function(item){
-          console.log(item.kind, item.type)
+      var items = Array.from(e.dataTransfer.items)
+
+      var uri = items.find(function(item) {
+        return item.type.match("^text/uri-list")
+      })
+
+      if(uri) {
+        uri.getAsString(function(s) {
+          send_url(s)
         })
+
+        return
       }
     })
 

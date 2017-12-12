@@ -15,11 +15,11 @@
     "chrome://favicon/"
   ],
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["recall.js", "background.js"]
   },
   "content_scripts": [{
     "matches": ["http://*/*", "https://*/*"],
-    "js": ["inject.js"],
+    "js": ["recall.js", "inject.js"],
     "css": ["inject.css"]
   }],
   "omnibox": { 
