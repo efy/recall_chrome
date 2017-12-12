@@ -17,17 +17,10 @@
     var el = document.createElement('div')
     el.id = "rc-dropzone"
     el.classList.add('rc-dropzone')
-    el.textContent = "Add to recall"
+    el.innerHTML = '<div class="rc-plusicon">+</div>'
 
     el.addEventListener('drop', function(e){
       e.preventDefault()
-
-      if (e.dataTransfer.types != null) {
-        var types = Array.from(e.dataTransfer.types)
-        types.forEach(function(t){
-          console.log(t)
-        })
-      }
 
       if (e.dataTransfer.items != null) {
         var items = Array.from(e.dataTransfer.items)

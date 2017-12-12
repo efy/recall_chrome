@@ -1,22 +1,29 @@
 .rc-dropzone {
   font-family: Helvetica, Arial, sans-serif;
-  font-weight: 700;
   text-align: center;
-  color: #333;
-  font-size: 14px;
+  color: white;
   text-transform: uppercase;
-  outline: 1px dashed #eaeaea;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 10px;
+  background: #5755d9;
   position: fixed;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 240px;
+  top: 20px;
+  right: 20px;
+  overflow: hidden;
+  width: 36px;
+  height: 36px;
+  border-radius: 100%;
   z-index: 99999;
 }
 
 .rc-dropzone__active {
-  background: #eaeaea;
+  background: #4240d4;
   outline: 0;
+}
+
+.rc-plusicon {
+  font-size: 30px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  vertical-align: middle;
 }
