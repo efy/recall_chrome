@@ -79,8 +79,6 @@ chrome.bookmarks.onCreated.addListener(function(id, bookmark) {
       }
       create_bookmark(bm, token)
     })
-  }).catch(function(err) {
-    console.log("authentication failed")
   })
 })
 

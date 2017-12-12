@@ -21,7 +21,6 @@ function authenticate() {
       }).then(function(token){
         resolve(token)
       }).catch(function(err) {
-        console.log(error)
         reject(err)
       })
     })
